@@ -13,17 +13,17 @@ from flask import Flask, jsonify, request
 import requests
 from uuid import uuid4
 from urllib.parse import urlparse
-from des import encrypt
+from des import encrypt_des
 
-HEX_KEY = '0x133457799BBCDFF1'
-# HEX_KEY = int(HEX_KEY,16)
-# HEX_KEY = hex(HEX_KEY)
+HEX_KEY = '133457799bbcdff1'
 
-def encrypt_des(block_sha256):
-    p1 = encrypt(block_sha256[:64], HEX_KEY)
-    p2 = encrypt(block_sha256[64:128], HEX_KEY)
-    p3 = encrypt(block_sha256[128:192], HEX_KEY)
-    p4 = encrypt(block_sha256[192:256], HEX_KEY)
+
+def encrypt(block_sha256):
+    print(block_sha256)
+    p1 = encrypt_des(block_sha256[:16], HEX_KEY)
+    p2 = encrypt_des(block_sha256[16:32], HEX_KEY)
+    p3 = encrypt_des(block_sha256[32:48], HEX_KEY)
+    p4 = encrypt_des(block_sha256[48:64], HEX_KEY)
     return str(p1+p2+p3+p4)
 
 USER_NAME = 'Bunty'
@@ -64,8 +64,8 @@ class Blockchain:
     
     def hash(self, block):
         encoded_block = json.dumps(block, sort_keys = True).encode()
-        # return encrypt_des(hashlib.sha256(encoded_block).hexdigest())
-        return hashlib.sha256(encoded_block).hexdigest()
+        return encrypt(hashlib.sha256(encoded_block).hexdigest())
+        # return hashlib.sha256(encoded_block).hexdigest()
     
     def is_chain_valid(self, chain):
         previous_block = chain[0]
