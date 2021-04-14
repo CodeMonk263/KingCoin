@@ -18,7 +18,7 @@ class ViewTransaction extends React.Component {
     });
   };
   updateTransactions = () => {
-    axios.get(`${serverUrl}api/update_chain`).then((response) => {
+    axios.get(`${serverUrl}/api/update_chain`).then((response) => {
       console.log(response.data);
       this.setState({
         data: response.data.new_chain || response.data.actual_chain,

@@ -90,8 +90,10 @@ class Blockchain:
         verifier = PKCS1_v1_5.new(public_key)
         h = SHA.new(str(transaction).encode("utf8"))
         try:
-            verifier.verify(h, binascii.unhexlify(signature))
-            return True
+            if verifier.verify(h, binascii.unhexlify(signature)):
+                return True
+            else:
+                return False
         except ValueError:
             return False
 
@@ -134,14 +136,17 @@ class Blockchain:
             "amount": amount,
         }
         if sender_pvt:  # Actual Transaction
-            private_key = RSA.importKey(binascii.unhexlify(sender_pvt))
-            signer = PKCS1_v1_5.new(private_key)
-            h = SHA.new(str(transaction).encode("utf8"))
-            signature = binascii.hexlify(signer.sign(h)).decode("ascii")
-            res_zkp = self.zero_knowledge_proof(transaction, sender_pub, signature)
-            if res_zkp:
-                self.transactions.append(transaction)
-            else:
+            try:
+                private_key = RSA.importKey(binascii.unhexlify(sender_pvt))
+                signer = PKCS1_v1_5.new(private_key)
+                h = SHA.new(str(transaction).encode("utf8"))
+                signature = binascii.hexlify(signer.sign(h)).decode("ascii")
+                res_zkp = self.zero_knowledge_proof(transaction, sender_pub, signature)
+                if res_zkp:
+                    self.transactions.append(transaction)
+                else:
+                    return False
+            except:
                 return False
         else:  # Mining Reward
             self.transactions.append(transaction)
@@ -239,12 +244,13 @@ def add_transaction():
         res_json["sender_pub"], res_json["sender_pvt"], res_json["receiver"], res_json["amount"]
     )
     if index:
-        response = {"message": f"This transaction will be added to Block {index}"}
+        response = {"message": f"This transaction will be added to Block {index}", "status": "success"}
+        return jsonify(response), 201
     else:
-        response = {"message": "Zero Knowledge Proof Failed! Could not verify signature!"}
+        response = {"message": "Zero Knowledge Proof Failed! Could not verify signature!", "status": "failed"}
+        return jsonify(response), 201
     # else:
     #     response = {'message': 'The user does not have enough funds for transaction'}
-    return jsonify(response), 201
 
 
 # Connecting new nodes
