@@ -7,6 +7,7 @@ import MakeTransaction from "./MakeTransaction";
 import MineTransaction from "./MineTransaction";
 import ConnectNode from "./ConnectNode";
 import AddUser from "./AddUser";
+import ViewUser from "./ViewUser";
 export default function App() {
   return (
     <div className="App">
@@ -19,6 +20,8 @@ export default function App() {
         <Route path="/connect_node" exact component={ConnectNode} />
         <Route path="/mine_transaction" exact component={MineTransaction} />
         <Route path="/add_user" exact component={AddUser} />
+        <Route path="/view_user" exact component={ViewUser} />
+
         {/* <Route path="/add" exact component={Add} />
         <Route path="/about" exact component={About} />
         <Route path="/schedule" exact component={Schedule} />
