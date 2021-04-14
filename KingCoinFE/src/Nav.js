@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import ViewTransaction from "./ViewTransaction";
 import "../src/stylesheets/Nav.css";
-import logo from "./pic.png"
+import logo from "./pic.png";
 
 class Nav extends React.Component {
   render() {
@@ -10,13 +10,11 @@ class Nav extends React.Component {
       <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
           <Link to="/" className="navbar-item">
-            <img
-              src={logo}
-              width="28"
-              height="28"
-            />
+            <img src={logo} width="28" height="28" />
             &nbsp;&nbsp;
-            <h1><b>KingCoin</b></h1>
+            <h1>
+              <b>KingCoin</b>
+            </h1>
           </Link>
           <a
             role="button"
@@ -65,7 +63,9 @@ class Nav extends React.Component {
                 <Link class="button is-primary" to="/add_user">
                   <strong>Add User</strong>
                 </Link>
-                {/* <a class="button is-light">Log in</a> */}
+                <Link class="button is-info" to="/view_user">
+                  View User
+                </Link>
               </div>
             </div>
           </div>
