@@ -24,7 +24,7 @@ class MakeTransaction extends React.Component {
       sender_pub: this.state.senderPublicKey,
       sender_pvt: this.state.senderPrivateKey,
       receiver: this.state.receiverPublicKey,
-      amount: this.state.amount,
+      amount: parseInt(this.state.amount),
     };
     JSON.stringify(transaction);
     axios
@@ -114,7 +114,7 @@ class MakeTransaction extends React.Component {
           <p class="control">
             <input
               className="input"
-              type="text"
+              type="number"
               name="amount"
               onChange={this.handleChange}
               value={this.state.amount}
